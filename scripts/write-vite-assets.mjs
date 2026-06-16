@@ -36,5 +36,5 @@ return [
 ];
 `;
 
-writeFileSync('bootstrap/vite-assets.php', php);
-console.log('Wrote bootstrap/vite-assets.php');
+writeFileSync('config/vite-assets.php', php);
+console.log('Wrote config/vite-assets.php');

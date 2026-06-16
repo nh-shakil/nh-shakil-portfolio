@@ -14,7 +14,7 @@ function portfolioHasFrontendBuild(): bool
 {
     return file_exists(public_path('build/manifest.json'))
         || file_exists(public_path('hot'))
-        || file_exists(base_path('bootstrap/vite-assets.php'));
+        || file_exists(config_path('vite-assets.php'));
 }
 
 function portfolioWelcomeView()
