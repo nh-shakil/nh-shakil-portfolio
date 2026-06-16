@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactMessage;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -15,15 +16,11 @@ class ContactController extends Controller
             'message' => ['required', 'string', 'max:2000'],
         ]);
 
-        // Intentionally minimal: you can later wire this to Mail, DB, or a CRM.
-        // Returning a stable JSON response keeps the frontend UX predictable.
+        ContactMessage::create($data);
+
         return response()->json([
             'ok' => true,
             'message' => 'Message received.',
-            'data' => [
-                'name' => $data['name'],
-                'email' => $data['email'],
-            ],
         ]);
     }
 }

@@ -1,17 +1,38 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FiGithub, FiLinkedin, FiMail, FiInstagram } from 'react-icons/fi';
 
+function linkHref(pathname, href) {
+  if (href.startsWith('#')) {
+    return pathname === '/' ? href : `/${href}`;
+  }
+  return href;
+}
+
 export function Footer({ site }) {
+  const { pathname } = useLocation();
   const year = new Date().getFullYear();
+
+  const links = [
+    ['About', '#about'],
+    ['Skills', '#skills'],
+    ['Services', '#services'],
+    ['Projects', '#projects'],
+    ['Blog', '/blog'],
+    ['Process', '#process'],
+    ['Timeline', '#timeline'],
+    ['Gallery', '#gallery'],
+    ['Contact', '#contact'],
+    ['Top', '#top'],
+  ];
+
   return (
     <footer className="relative py-14">
       <div className="container-shell">
         <div className="rounded-[var(--radius-2xl)] glass-strong px-6 py-10">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-5">
-              <div className="text-lg font-semibold tracking-tight text-white">
-                {site.name}
-              </div>
+              <div className="text-lg font-semibold tracking-tight text-white">{site.name}</div>
               <div className="mt-2 text-sm text-white/70">{site.title}</div>
               <div className="mt-4 text-sm leading-relaxed text-white/65">
                 I build fast, SEO-friendly web apps and reliable APIs with Laravel, React, and
@@ -20,23 +41,12 @@ export function Footer({ site }) {
             </div>
 
             <div className="md:col-span-4">
-              <div className="text-xs font-medium tracking-wide text-white/60">
-                Quick links
-              </div>
+              <div className="text-xs font-medium tracking-wide text-white/60">Quick links</div>
               <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-                {[
-                  ['About', '#about'],
-                  ['Skills', '#skills'],
-                  ['Services', '#services'],
-                  ['Projects', '#projects'],
-                  ['Process', '#process'],
-                  ['Timeline', '#timeline'],
-                  ['Contact', '#contact'],
-                  ['Top', '#top'],
-                ].map(([label, href]) => (
+                {links.map(([label, href]) => (
                   <a
                     key={href}
-                    href={href}
+                    href={linkHref(pathname, href)}
                     className="rounded-xl px-3 py-2 text-white/70 transition hover:bg-white/6 hover:text-white"
                   >
                     {label}
@@ -60,6 +70,14 @@ export function Footer({ site }) {
           <div className="mt-10 h-px w-full bg-white/10" />
           <div className="mt-6 flex flex-col gap-3 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
             <span>© {year} {site.name}.</span>
+            <div className="flex flex-wrap gap-4">
+              <Link to="/projects" className="hover:text-white/75">
+                All projects
+              </Link>
+              <Link to="/blog" className="hover:text-white/75">
+                Blog
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -80,4 +98,3 @@ function Social({ href, label, icon: Icon }) {
     </a>
   );
 }
-

@@ -133,32 +133,53 @@ export const defaultSite = {
     {
       type: 'experience',
       title: 'Back End Developer',
-      org: 'Intigrad Technologies (Australia)',
-      period: 'Jul 2025 — Present',
-      desc: 'Backend web development with Laravel, API integration, and production-focused engineering practices.',
+      org: 'Intigrad Technologies, Australia',
+      employmentType: 'Part-time',
+      period: 'Jul 2025 - Present · 1 yr',
+      location: 'Australia · Remote',
+      desc: 'Backend web Developer',
+      skills: ['Back-End Web Development', 'Server Side Programming', 'Laravel', 'REST API'],
+    },
+    {
+      type: 'experience',
+      title: 'Junior Assistant Teacher (ICT)',
+      org: 'Ugharia Union Council High School',
+      employmentType: 'Full-time',
+      period: 'Jul 2024 - Present · 2 yrs',
+      location: 'Chandpur District, Chattogram, Bangladesh · On-site',
+      desc: 'Teaching ICT and supporting classroom learning with practical technology skills.',
+      skills: ['ICT Education', 'Classroom Instruction', 'Computer Fundamentals'],
     },
     {
       type: 'experience',
       title: 'Instructor',
       org: 'Shahrasti Science and Technology Institute',
-      period: 'Jan 2024 — Present',
+      employmentType: 'Full-time',
+      period: 'Jan 2024 - Present · 2 yrs 6 mos',
+      location: 'Bangladesh · On-site',
       desc: 'Teaching and mentoring with a focus on practical skills, structured learning, and real-world examples.',
+      skills: ['Instruction', 'Mentoring', 'Practical Training'],
     },
     {
       type: 'education',
       title: 'Diploma in Electrical Engineering (Completed)',
       org: 'CCN Polytechnic Institute',
       period: '2020 — 2024',
+      location: 'Bangladesh',
       desc: 'Completed foundational engineering coursework with practical lab-based learning and project work.',
+      skills: [],
     },
     {
       type: 'education',
       title: 'BSc in Computer Science',
       org: 'University of South Asia',
       period: 'Ongoing',
+      location: 'Bangladesh',
       desc: 'Studying computer science with focus on software engineering, web technologies, and system design.',
+      skills: [],
     },
   ],
+  gallery: [],
   contact: {
     headline: "Let’s build something premium.",
     desc: 'Send a message and I’ll reply with next steps, timeline, and a clear estimate.',
@@ -188,8 +209,9 @@ export function mergeSiteSettings(apiSite) {
         noteTitle: apiSite.hero?.noteTitle,
         note: apiSite.hero?.note,
       }),
-      metrics:
-        apiSite.hero?.metrics?.length > 0 ? apiSite.hero.metrics : defaultSite.hero.metrics,
+      metrics: Array.isArray(apiSite.hero?.metrics)
+        ? apiSite.hero.metrics
+        : defaultSite.hero.metrics,
     },
     ctas: {
       primary: { ...defaultSite.ctas.primary, ...pickDefined(apiSite.ctas?.primary) },
@@ -201,7 +223,7 @@ export function mergeSiteSettings(apiSite) {
         headline: apiSite.about?.headline,
         availability: apiSite.about?.availability,
       }),
-      bio: apiSite.about?.bio?.length > 0 ? apiSite.about.bio : defaultSite.about.bio,
+      bio: Array.isArray(apiSite.about?.bio) ? apiSite.about.bio : defaultSite.about.bio,
     },
     contact: {
       ...defaultSite.contact,
@@ -210,10 +232,8 @@ export function mergeSiteSettings(apiSite) {
         desc: apiSite.contact?.desc,
       }),
     },
-    timeline:
-      Array.isArray(apiSite.timeline) && apiSite.timeline.length > 0
-        ? apiSite.timeline
-        : defaultSite.timeline,
+    timeline: Array.isArray(apiSite.timeline) ? apiSite.timeline : defaultSite.timeline,
+    gallery: Array.isArray(apiSite.gallery) ? apiSite.gallery : [],
   };
 
   return merged;

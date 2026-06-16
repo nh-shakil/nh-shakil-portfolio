@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { defaultSite, mergeSiteSettings } from '../data/site';
-
-function getApiBase() {
-  const base = import.meta.env?.VITE_API_BASE_URL;
-  return typeof base === 'string' ? base.replace(/\/+$/, '') : '';
-}
+import { getApiBase } from '../lib/api';
 
 export function useSite() {
   const [site, setSite] = useState(defaultSite);

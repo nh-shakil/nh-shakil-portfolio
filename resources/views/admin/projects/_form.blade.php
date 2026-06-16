@@ -38,12 +38,18 @@
 
         <div class="mt-6 rounded-[var(--radius-2xl)] border border-white/10 bg-white/5 p-6">
             <div class="text-sm font-semibold">Images (multiple)</div>
-            <div class="mt-1 text-xs text-white/60">Upload multiple images. If a project has multiple images, the website will show a slider.</div>
+            <div class="mt-1 text-xs text-white/60">Upload multiple images (JPG, PNG, WebP — max 10MB each). Multiple images show as a slider on the site.</div>
 
             <input type="file" name="images[]" multiple accept="image/*"
                 class="mt-4 block w-full text-sm text-white/70 file:mr-4 file:rounded-full file:border-0 file:bg-white file:px-4 file:py-2 file:text-sm file:font-medium file:text-black hover:file:bg-white/90" />
             @error('images')<div class="mt-2 text-xs text-rose-200">{{ $message }}</div>@enderror
-            @error('images.*')<div class="mt-2 text-xs text-rose-200">{{ $message }}</div>@enderror
+            @foreach ($errors->getMessages() as $field => $messages)
+                @if (str_starts_with($field, 'images.'))
+                    @foreach ($messages as $message)
+                        <div class="mt-2 text-xs text-rose-200">{{ $message }}</div>
+                    @endforeach
+                @endif
+            @endforeach
 
             @if ($isEdit && $project->images->count())
                 <div class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">

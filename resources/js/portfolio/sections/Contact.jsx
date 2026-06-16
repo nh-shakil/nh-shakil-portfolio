@@ -1,18 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiMessageCircle, FiSend } from 'react-icons/fi';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { apiPost } from '../lib/api';
 import { variants } from '../lib/motion';
 
-function getApiBase() {
-  const base = import.meta.env?.VITE_API_BASE_URL;
-  return typeof base === 'string' ? base.replace(/\/+$/, '') : '';
-}
-
 export function Contact({ site }) {
-  const apiBase = useMemo(() => getApiBase(), []);
   const [status, setStatus] = useState({ state: 'idle', message: '' });
   const [form, setForm] = useState({ name: '', email: '', message: '' });
 
@@ -25,23 +20,21 @@ export function Contact({ site }) {
     setStatus({ state: 'loading', message: '' });
 
     try {
-      const res = await fetch(`${apiBase}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || 'Request failed');
-      }
-
+      const data = await apiPost('/api/contact', form);
       setForm({ name: '', email: '', message: '' });
-      setStatus({ state: 'success', message: 'Thanks—message received. I’ll reply within 24 hours.' });
+      setStatus({
+        state: 'success',
+        message: data?.message || 'Thanks—message received. I’ll reply within 24 hours.',
+      });
     } catch (err) {
+      const fieldErrors = err.errors
+        ? Object.values(err.errors).flat().join(' ')
+        : '';
       setStatus({
         state: 'error',
         message:
+          fieldErrors ||
+          err.message ||
           'Could not send message. Please use the email/WhatsApp buttons for now.',
       });
     }
@@ -182,4 +175,3 @@ function Field({ label, textarea = false, className = '', ...props }) {
     </label>
   );
 }
-

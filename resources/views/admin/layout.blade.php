@@ -1,3 +1,7 @@
+@php
+    use App\Models\ContactMessage;
+    $unreadMessages = ContactMessage::query()->whereNull('read_at')->count();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,6 +23,15 @@
                     <a href="/admin/projects" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">Projects</a>
                     <a href="/admin/settings" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">Settings</a>
                     <a href="/admin/timeline" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">Timeline</a>
+                    <a href="/admin/gallery" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">Gallery</a>
+                    <a href="/admin/contact-messages" class="relative rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">
+                        Messages
+                        @if ($unreadMessages > 0)
+                            <span class="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-rose-300/20 px-1.5 py-0.5 text-[11px] text-rose-100">
+                                {{ $unreadMessages }}
+                            </span>
+                        @endif
+                    </a>
                     <a href="/admin/blog-posts" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">Blog</a>
                     <a href="/" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10">View site</a>
                     <form method="POST" action="{{ route('admin.logout') }}">

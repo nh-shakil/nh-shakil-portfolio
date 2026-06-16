@@ -41,11 +41,13 @@ class SettingController extends Controller
         }
 
         if ($request->hasFile('profile_image_upload')) {
+            $old = Setting::query()->where('key', 'profile_image')->value('value');
             $path = $request->file('profile_image_upload')->store('profile', 'public');
             Setting::query()->updateOrCreate(
                 ['key' => 'profile_image'],
                 ['value' => $path],
             );
+            $this->deleteStoredFile($old);
         }
 
         if ($request->boolean('remove_cv')) {

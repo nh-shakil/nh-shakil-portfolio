@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectImage extends Model
 {
@@ -16,6 +17,15 @@ class ProjectImage extends Model
         'alt',
         'sort_order',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $image) {
+            if ($image->path) {
+                Storage::disk('public')->delete($image->path);
+            }
+        });
+    }
 
     public function project(): BelongsTo
     {

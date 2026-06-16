@@ -1,10 +1,29 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useReducedMotionPref } from '../../lib/a11y';
 
-export function ProjectCarousel({ images = [], title = '' }) {
+export function ProjectCarousel({
+  images = [],
+  title = '',
+  aspectClass = 'aspect-[16/10]',
+  autoPlay = false,
+  autoPlayInterval = 4500,
+}) {
   const safe = useMemo(() => (Array.isArray(images) ? images : []), [images]);
   const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const reducedMotion = useReducedMotionPref();
+
+  useEffect(() => {
+    if (!autoPlay || safe.length <= 1 || reducedMotion || paused) return;
+
+    const timer = window.setInterval(() => {
+      setIdx((i) => (i + 1) % safe.length);
+    }, autoPlayInterval);
+
+    return () => window.clearInterval(timer);
+  }, [autoPlay, autoPlayInterval, paused, reducedMotion, safe.length]);
 
   if (safe.length === 0) return null;
   const current = safe[Math.max(0, Math.min(safe.length - 1, idx))];
@@ -13,8 +32,14 @@ export function ProjectCarousel({ images = [], title = '' }) {
   const next = () => setIdx((i) => (i + 1) % safe.length);
 
   return (
-    <div className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-white/10 bg-black/30">
-      <div className="relative aspect-[16/10] w-full">
+    <div
+      className="relative overflow-hidden rounded-[var(--radius-2xl)] border border-white/10 bg-black/30"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <div className={`relative ${aspectClass} w-full`}>
         <AnimatePresence mode="wait">
           <motion.img
             key={current.url}

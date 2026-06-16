@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Setting;
 use App\Models\TimelineItem;
+use App\Models\GalleryItem;
 
 class SiteSettingsService
 {
@@ -110,8 +111,33 @@ class SiteSettingsService
                 'type' => $t->type,
                 'title' => $t->title,
                 'org' => $t->org,
+                'employmentType' => $t->employment_type,
                 'period' => $t->period,
+                'location' => $t->location,
                 'desc' => $t->desc,
+                'skills' => $t->skills
+                    ? array_values(array_filter(array_map('trim', explode(',', $t->skills))))
+                    : [],
+            ])
+            ->values()
+            ->all();
+
+        $gallery = GalleryItem::query()
+            ->with('images')
+            ->where('is_published', true)
+            ->orderBy('sort_order')
+            ->orderByDesc('id')
+            ->get()
+            ->filter(fn (GalleryItem $item) => $item->images->isNotEmpty())
+            ->map(fn (GalleryItem $item) => [
+                'id' => $item->id,
+                'title' => $item->title,
+                'caption' => $item->caption,
+                'images' => $item->images->map(fn ($img) => [
+                    'id' => $img->id,
+                    'url' => self::publicUrl($img->path),
+                    'alt' => $img->alt ?: $item->title,
+                ])->values()->all(),
             ])
             ->values()
             ->all();
@@ -124,6 +150,7 @@ class SiteSettingsService
             'profileImage' => self::publicUrl($get('profile_image')),
             'cvUrl' => self::publicUrl($get('cv_file')),
             'timeline' => $timeline,
+            'gallery' => $gallery,
             'socials' => [
                 'github' => $get('github'),
                 'linkedin' => $get('linkedin'),

@@ -58,8 +58,11 @@ class TimelineItemController extends Controller
             'type' => ['required', 'in:experience,education'],
             'title' => ['required', 'string', 'max:180'],
             'org' => ['nullable', 'string', 'max:180'],
+            'employment_type' => ['nullable', 'string', 'max:40'],
             'period' => ['nullable', 'string', 'max:80'],
+            'location' => ['nullable', 'string', 'max:180'],
             'desc' => ['nullable', 'string'],
+            'skills' => ['nullable', 'string', 'max:500'],
             'is_published' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:100000'],
         ]);

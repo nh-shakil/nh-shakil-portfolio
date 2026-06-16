@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiLinkedin, FiMail, FiMenu, FiX, FiInstagram } from 'react-icons/fi';
 import { Link, useLocation } from 'react-router-dom';
@@ -9,15 +9,25 @@ const navItems = [
   { label: 'Skills', href: '#skills' },
   { label: 'Services', href: '#services' },
   { label: 'Projects', href: '/projects' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Process', href: '#process' },
   { label: 'Timeline', href: '#timeline' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Contact', href: '#contact' },
 ];
 
 export function Navbar({ site }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const onHome = location.pathname === '/';
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const socials = useMemo(
     () => [
@@ -30,9 +40,17 @@ export function Navbar({ site }) {
   );
 
   return (
-    <header className="sticky top-0 z-50">
+    <header
+      className={`sticky top-0 z-50 transition-[background,backdrop-filter,box-shadow] duration-300 ${
+        scrolled ? 'shadow-lg shadow-black/25' : ''
+      }`}
+    >
       <div className="container-shell">
-        <div className="mt-4 rounded-[var(--radius-2xl)] glass-strong">
+        <div
+          className={`rounded-[var(--radius-2xl)] transition-[background,backdrop-filter,box-shadow,margin] duration-300 ${
+            scrolled ? 'glass-nav-scrolled' : 'glass-strong'
+          }`}
+        >
           <div className="flex items-center justify-between px-4 py-3 sm:px-5">
             <Link to="/" className="group inline-flex items-center gap-2">
               <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-xl bg-white/7 ring-1 ring-white/10">
@@ -109,7 +127,9 @@ export function Navbar({ site }) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden border-t border-white/10 lg:hidden"
+                className={`overflow-hidden border-t border-white/10 lg:hidden ${
+                  scrolled || open ? 'bg-white/5 backdrop-blur' : ''
+                }`}
               >
                 <div className="px-4 py-3">
                   <div className="grid grid-cols-2 gap-2">

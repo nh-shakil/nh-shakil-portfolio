@@ -10,8 +10,11 @@ class TimelineItem extends Model
         'type',
         'title',
         'org',
+        'employment_type',
         'period',
+        'location',
         'desc',
+        'skills',
         'is_published',
         'sort_order',
     ];

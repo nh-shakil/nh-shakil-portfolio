@@ -8,46 +8,35 @@ import { Tag } from '../components/ui/Tag';
 import { Link } from 'react-router-dom';
 import { apiGet } from '../lib/api';
 import { variants } from '../lib/motion';
+import { ProjectCarousel } from '../components/projects/ProjectCarousel';
 
 export function Projects({ site }) {
-  const [projects, setProjects] = useState(null);
+  const [state, setState] = useState({ loading: true, projects: [], error: '' });
 
   useEffect(() => {
     let alive = true;
-    apiGet('/api/projects?featured=1')
+    apiGet('/api/projects')
       .then((json) => {
         if (!alive) return;
-        setProjects(json.projects ?? []);
+        setState({ loading: false, projects: json.projects ?? [], error: '' });
       })
       .catch(() => {
         if (!alive) return;
-        setProjects([]);
+        setState({ loading: false, projects: [], error: 'Could not load projects.' });
       });
     return () => {
       alive = false;
     };
   }, []);
 
-  const items =
-    projects && Array.isArray(projects) && projects.length
-      ? projects
-      : site.projects.map((p) => ({
-          id: p.name,
-          title: p.name,
-          excerpt: p.desc,
-          techStack: p.stack,
-          liveUrl: p.demoUrl,
-          githubUrl: p.githubUrl,
-          isFeatured: !!p.featured,
-          images: [],
-        }));
+  const items = (state.projects ?? []).slice(0, 4);
 
   return (
     <Section
       id="projects"
-      eyebrow="Featured Projects"
-      title="Selected work with premium UI + strong engineering"
-      desc="A few representative builds showcasing API-first backend work, premium UI, and production-ready delivery."
+      eyebrow="Projects"
+      title="Recent work, shipped end-to-end"
+      desc="A few representative builds showcasing premium UI, reliable APIs, and production-ready delivery."
     >
       <div className="mb-6 flex items-center justify-between">
         <div className="text-sm text-white/60">Managed from admin panel</div>
@@ -58,76 +47,105 @@ export function Projects({ site }) {
           View all projects
         </Link>
       </div>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {items.map((p, i) => (
-          <motion.div
-            key={p.id ?? p.title}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: '-10% 0px -30% 0px' }}
-            variants={variants.fadeUp(i)}
-            className={p.isFeatured ? 'lg:col-span-6' : 'lg:col-span-6'}
-          >
-            <ProjectCard project={p} />
-          </motion.div>
-        ))}
-      </div>
+
+      {state.loading ? (
+        <div className="rounded-[var(--radius-2xl)] border border-white/10 bg-white/5 px-6 py-12 text-center text-sm text-white/65">
+          Loading projects…
+        </div>
+      ) : state.error ? (
+        <div className="rounded-[var(--radius-2xl)] border border-rose-300/20 bg-rose-300/10 px-6 py-12 text-center text-sm text-rose-100">
+          {state.error}
+        </div>
+      ) : items.length === 0 ? (
+        <div className="rounded-[var(--radius-2xl)] border border-white/10 bg-white/5 px-6 py-12 text-center text-sm text-white/65">
+          No projects yet. Add projects from the admin panel.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((p, i) => (
+            <motion.div
+              key={p.id ?? p.title}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, margin: '-10% 0px -30% 0px' }}
+              variants={variants.fadeUp(i)}
+            >
+              <ProjectCard project={p} />
+            </motion.div>
+          ))}
+        </div>
+      )}
     </Section>
   );
 }
 
 function ProjectCard({ project }) {
+  const images = project?.images ?? [];
+
   return (
     <Card className="group overflow-hidden">
-      <div className="relative p-6 sm:p-7">
+      {images.length ? (
+        <div className="p-4 pb-0">
+          <ProjectCarousel
+            images={images}
+            title={project.title}
+            aspectClass="aspect-[16/10]"
+            autoPlay={images.length > 1}
+          />
+        </div>
+      ) : null}
+
+      <div className="relative p-5">
         <div className="absolute inset-0 opacity-60">
-          <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-indigo-500/12 blur-3xl" />
-          <div className="absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-fuchsia-500/10 blur-3xl" />
+          <div className="absolute -top-20 -right-24 h-56 w-56 rounded-full bg-indigo-500/10 blur-3xl" />
+          <div className="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
         </div>
 
         <div className="relative">
-          <div className="flex items-start justify-between gap-4">
-            <div>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+                <h3 className="truncate text-base font-semibold tracking-tight text-white">
                   {project.title}
                 </h3>
-                {project.isFeatured && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-white/75">
+                {project.isFeatured ? (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] font-medium text-white/75">
                     <FiStar className="h-3.5 w-3.5" />
                     Featured
                   </span>
-                )}
+                ) : null}
               </div>
               {project.excerpt ? (
-                <p className="mt-2 text-sm leading-relaxed text-white/70">{project.excerpt}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/70 line-clamp-2">
+                  {project.excerpt}
+                </p>
               ) : null}
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-2">
-            {(project.techStack ?? []).map((t) => (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {(project.techStack ?? []).slice(0, 4).map((t) => (
               <Tag key={t}>{t}</Tag>
             ))}
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-4 flex flex-col gap-2">
             {project.liveUrl ? (
               <Button
                 href={project.liveUrl}
                 variant="primary"
-                className="w-full sm:w-auto"
+                className="w-full"
                 target={project.liveUrl?.startsWith('http') ? '_blank' : undefined}
                 rel={project.liveUrl?.startsWith('http') ? 'noreferrer' : undefined}
               >
-                Live Demo <FiExternalLink className="h-4 w-4" />
+                Live <FiExternalLink className="h-4 w-4" />
               </Button>
             ) : null}
             {project.githubUrl ? (
               <Button
                 href={project.githubUrl}
                 variant="ghost"
-                className="w-full sm:w-auto"
+                className="w-full"
                 target={project.githubUrl?.startsWith('http') ? '_blank' : undefined}
                 rel={project.githubUrl?.startsWith('http') ? 'noreferrer' : undefined}
               >
@@ -137,13 +155,6 @@ function ProjectCard({ project }) {
           </div>
         </div>
       </div>
-
-      <div className="h-px w-full bg-white/10" />
-      <div className="flex items-center justify-between px-6 py-4 text-xs text-white/60 sm:px-7">
-        <span>Premium UI • Glass surfaces • Smooth motion</span>
-        <span className="opacity-0 transition group-hover:opacity-100">View details →</span>
-      </div>
     </Card>
   );
 }
-

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Support\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -69,6 +70,8 @@ class ProjectController extends Controller
 
     private function validated(Request $request): array
     {
+        ImageUpload::assertValidFiles($request);
+
         $data = $request->validate([
             'title' => ['required', 'string', 'max:180'],
             'slug' => ['nullable', 'string', 'max:220'],
@@ -85,7 +88,7 @@ class ProjectController extends Controller
             'remove_image_ids' => ['nullable', 'array'],
             'remove_image_ids.*' => ['integer'],
             'images' => ['nullable', 'array'],
-            'images.*' => ['file', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'images.*' => ImageUpload::imageRules(),
         ]);
 
         $data['is_featured'] = (bool) ($request->boolean('is_featured'));
@@ -121,7 +124,7 @@ class ProjectController extends Controller
     {
         $removeIds = $request->input('remove_image_ids', []);
         if (is_array($removeIds) && $removeIds !== []) {
-            $project->images()->whereIn('id', $removeIds)->delete();
+            $project->images()->whereIn('id', $removeIds)->get()->each->delete();
         }
 
         $files = $request->file('images', []);

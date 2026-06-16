@@ -3,23 +3,26 @@ import { motion } from 'framer-motion';
 import { FiBookOpen, FiBriefcase } from 'react-icons/fi';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
+import { Tag } from '../components/ui/Tag';
 import { variants } from '../lib/motion';
 
 export function Timeline({ site }) {
+  const items = site.timeline ?? [];
+
   return (
     <Section
       id="timeline"
       eyebrow="Experience & Education"
       title="A modern timeline of my journey"
-      desc="A clean vertical layout that highlights roles, milestones, and progress."
+      desc="Roles, milestones, and progress across backend development, teaching, and education."
     >
       <div className="relative">
         <div className="pointer-events-none absolute left-3 top-0 h-full w-px bg-white/10 sm:left-6" />
 
         <div className="space-y-4">
-          {site.timeline.map((t, i) => (
+          {items.map((t, i) => (
             <motion.div
-              key={`${t.type}-${t.title}`}
+              key={`${t.type}-${t.title}-${i}`}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: '-10% 0px -30% 0px' }}
@@ -40,11 +43,29 @@ export function Timeline({ site }) {
                 <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-start">
                   <div>
                     <div className="text-base font-semibold text-white">{t.title}</div>
-                    <div className="mt-1 text-sm text-white/65">{t.org}</div>
+                    <div className="mt-1 text-sm text-white/65">
+                      {t.org}
+                      {t.employmentType ? ` · ${t.employmentType}` : ''}
+                    </div>
                   </div>
                   <div className="text-xs font-medium text-white/55">{t.period}</div>
                 </div>
-                <div className="mt-3 text-sm leading-relaxed text-white/70">{t.desc}</div>
+
+                {t.location ? (
+                  <div className="mt-2 text-xs text-white/50">{t.location}</div>
+                ) : null}
+
+                {t.desc ? (
+                  <div className="mt-3 text-sm leading-relaxed text-white/70">{t.desc}</div>
+                ) : null}
+
+                {Array.isArray(t.skills) && t.skills.length > 0 ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {t.skills.map((skill) => (
+                      <Tag key={skill}>{skill}</Tag>
+                    ))}
+                  </div>
+                ) : null}
               </Card>
             </motion.div>
           ))}
@@ -53,4 +74,3 @@ export function Timeline({ site }) {
     </Section>
   );
 }
-

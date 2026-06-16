@@ -4,19 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>NH Shakil — Software Engineer & Full Stack Developer</title>
-        <meta
-            name="description"
-            content="NH Shakil — Software Engineer & Full Stack Developer from Bangladesh. I build modern web & mobile products with Laravel, React, Flutter, and premium UI/UX."
-        >
+        <title>{{ $title ?? 'NH Shakil — Software Engineer & Full Stack Developer' }}</title>
+        <meta name="description" content="{{ $description ?? 'NH Shakil — Software Engineer & Full Stack Developer from Bangladesh.' }}">
         <meta name="theme-color" content="#0A0C12">
 
         <meta property="og:type" content="website">
-        <meta property="og:title" content="NH Shakil — Software Engineer & Full Stack Developer">
-        <meta
-            property="og:description"
-            content="Premium dark SaaS-style portfolio with projects, services, work process, and contact."
-        >
+        <meta property="og:title" content="{{ $title ?? 'NH Shakil — Software Engineer & Full Stack Developer' }}">
+        <meta property="og:description" content="{{ $description ?? 'Premium dark SaaS-style portfolio with projects, services, work process, and contact.' }}">
         <meta property="og:locale" content="en_US">
 
         @fonts
@@ -41,8 +35,16 @@
         <div id="app">
             <div class="container-shell py-16">
                 <div class="rounded-[26px] border border-white/10 bg-white/5 px-6 py-10 text-white/80">
-                    <div class="text-lg font-semibold text-white">Loading…</div>
-                    <div class="mt-2 text-sm text-white/60">Preparing the portfolio experience.</div>
+                    @if (!($hasBuild ?? true))
+                        <div class="text-lg font-semibold text-white">Frontend build required</div>
+                        <div class="mt-2 text-sm text-white/60">
+                            Run <code class="rounded bg-black/30 px-1.5 py-0.5">npm install</code> and
+                            <code class="rounded bg-black/30 px-1.5 py-0.5">npm run build</code> from the project folder.
+                        </div>
+                    @else
+                        <div class="text-lg font-semibold text-white">Loading…</div>
+                        <div class="mt-2 text-sm text-white/60">Preparing the portfolio experience.</div>
+                    @endif
                 </div>
             </div>
         </div>

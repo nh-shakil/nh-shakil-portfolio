@@ -116,28 +116,12 @@ export function AllProjectsPage({ site }) {
                       </Button>
                     ) : null}
                   </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-3 text-xs text-white/60">
-                    <Meta label="Role" value={p.role} />
-                    <Meta label="Client" value={p.client} />
-                    <Meta label="Completed" value={p.completedAt} />
-                    <Meta label="Slug" value={p.slug} />
-                  </div>
                 </Card>
               </motion.div>
             ))}
           </div>
         )}
       </Section>
-    </div>
-  );
-}
-
-function Meta({ label, value }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-3">
-      <div className="text-[11px] font-medium text-white/50">{label}</div>
-      <div className="mt-1 text-xs text-white/80">{value || '—'}</div>
     </div>
   );
 }

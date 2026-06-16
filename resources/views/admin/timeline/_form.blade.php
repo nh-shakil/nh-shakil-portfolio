@@ -30,13 +30,28 @@
         </label>
 
         <label class="block">
+            <div class="text-xs font-medium tracking-wide text-white/60">Employment type</div>
+            <input name="employment_type" value="{{ old('employment_type', $isEdit ? $item->employment_type : '') }}" placeholder="Full-time, Part-time" class="{{ $inputClass }}" />
+        </label>
+
+        <label class="block">
             <div class="text-xs font-medium tracking-wide text-white/60">Period</div>
-            <input name="period" value="{{ old('period', $isEdit ? $item->period : '') }}" placeholder="Jul 2025 — Present" class="{{ $inputClass }}" />
+            <input name="period" value="{{ old('period', $isEdit ? $item->period : '') }}" placeholder="Jul 2025 — Present · 1 yr" class="{{ $inputClass }}" />
+        </label>
+
+        <label class="block sm:col-span-2">
+            <div class="text-xs font-medium tracking-wide text-white/60">Location</div>
+            <input name="location" value="{{ old('location', $isEdit ? $item->location : '') }}" placeholder="Australia · Remote" class="{{ $inputClass }}" />
         </label>
 
         <label class="block sm:col-span-2">
             <div class="text-xs font-medium tracking-wide text-white/60">Description</div>
             <textarea name="desc" rows="4" class="{{ $inputClass }}">{{ old('desc', $isEdit ? $item->desc : '') }}</textarea>
+        </label>
+
+        <label class="block sm:col-span-2">
+            <div class="text-xs font-medium tracking-wide text-white/60">Skills (comma separated)</div>
+            <input name="skills" value="{{ old('skills', $isEdit ? $item->skills : '') }}" placeholder="Laravel, REST API, Server Side Programming" class="{{ $inputClass }}" />
         </label>
 
         <label class="inline-flex items-center gap-2 text-sm text-white/75">

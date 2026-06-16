@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BlogPostController extends Controller
@@ -49,7 +50,10 @@ class BlogPostController extends Controller
         $data['slug'] = $data['slug'] ? $this->uniqueSlug($data['slug'], $blog_post->id) : $this->uniqueSlug(Str::slug($data['title']), $blog_post->id);
 
         $cover = $this->storeCover($request);
-        if ($cover) $data['cover_image'] = $cover;
+        if ($cover) {
+            $this->deleteStoredFile($blog_post->cover_image);
+            $data['cover_image'] = $cover;
+        }
 
         $blog_post->fill($data)->save();
 
@@ -58,6 +62,7 @@ class BlogPostController extends Controller
 
     public function destroy(BlogPost $blog_post)
     {
+        $this->deleteStoredFile($blog_post->cover_image);
         $blog_post->delete();
         return redirect()->route('admin.blog-posts.index')->with('status', 'Blog post deleted.');
     }
@@ -106,6 +111,15 @@ class BlogPostController extends Controller
         $file = $request->file('cover');
         if (!$file) return null;
         return $file->store('blog', 'public');
+    }
+
+    private function deleteStoredFile(?string $path): void
+    {
+        if (! $path) {
+            return;
+        }
+
+        Storage::disk('public')->delete($path);
     }
 }
 
