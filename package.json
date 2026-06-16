@@ -3,8 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "vercel-build": "vite build",
+        "build": "vite build && node scripts/write-vite-assets.mjs",
+        "vercel-build": "vite build && node scripts/write-vite-assets.mjs",
         "dev": "vite"
     },
     "devDependencies": {

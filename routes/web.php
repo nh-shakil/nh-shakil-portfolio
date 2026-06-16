@@ -10,6 +10,13 @@ use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\ContactMessageController;
 use App\Services\SiteSettingsService;
 
+function portfolioHasFrontendBuild(): bool
+{
+    return file_exists(public_path('build/manifest.json'))
+        || file_exists(public_path('hot'))
+        || file_exists(base_path('bootstrap/vite-assets.php'));
+}
+
 function portfolioWelcomeView()
 {
     $title = 'NH Shakil — Software Engineer & Full Stack Developer';
@@ -30,7 +37,7 @@ function portfolioWelcomeView()
     return view('welcome', [
         'title' => $title,
         'description' => $description,
-        'hasBuild' => file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')),
+        'hasBuild' => portfolioHasFrontendBuild(),
     ]);
 }
 
