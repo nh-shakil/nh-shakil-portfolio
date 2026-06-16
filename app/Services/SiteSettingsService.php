@@ -79,6 +79,11 @@ class SiteSettingsService
             return $path;
         }
 
+        $uploadsFile = public_path('uploads/'.$path);
+        if (is_readable($uploadsFile)) {
+            return asset('uploads/'.$path);
+        }
+
         return asset('storage/'.$path);
     }
 

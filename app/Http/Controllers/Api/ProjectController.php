@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Services\SiteSettingsService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -54,7 +55,7 @@ class ProjectController extends Controller
             'isFeatured' => (bool) $p->is_featured,
             'images' => $p->images->map(fn ($img) => [
                 'id' => $img->id,
-                'url' => asset('storage/'.$img->path),
+                'url' => SiteSettingsService::publicUrl($img->path),
                 'alt' => $img->alt,
             ])->values(),
         ];
