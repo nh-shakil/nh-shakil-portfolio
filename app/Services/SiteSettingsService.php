@@ -79,12 +79,26 @@ class SiteSettingsService
             return $path;
         }
 
-        $uploadsFile = public_path('uploads/'.$path);
-        if (is_readable($uploadsFile)) {
-            return asset('uploads/'.$path);
+        $uploadsUrl = self::uploadsAsset($path);
+        if ($uploadsUrl !== null) {
+            return $uploadsUrl;
         }
 
         return asset('storage/'.$path);
+    }
+
+    private static function uploadsAsset(string $path): ?string
+    {
+        $webpPath = preg_replace('/\.(png|jpe?g)$/i', '.webp', $path);
+        if ($webpPath !== $path && is_readable(public_path('uploads/'.$webpPath))) {
+            return asset('uploads/'.$webpPath);
+        }
+
+        if (is_readable(public_path('uploads/'.$path))) {
+            return asset('uploads/'.$path);
+        }
+
+        return null;
     }
 
     public static function toSiteArray(): array

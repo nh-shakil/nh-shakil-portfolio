@@ -129,7 +129,11 @@ export function Hero({ site }) {
                             <img
                               src={site.profileImage}
                               alt={`${site.name} profile photo`}
-                              loading="lazy"
+                              loading="eager"
+                              fetchPriority="high"
+                              decoding="async"
+                              width={176}
+                              height={234}
                               className="h-full w-full object-contain bg-black/30"
                             />
                             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/20" />

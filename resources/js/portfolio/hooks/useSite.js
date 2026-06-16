@@ -4,7 +4,6 @@ import { getApiBase } from '../lib/api';
 
 export function useSite() {
   const [site, setSite] = useState(defaultSite);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const apiBase = getApiBase();
@@ -16,9 +15,8 @@ export function useSite() {
           setSite(mergeSiteSettings(data.site));
         }
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .catch(() => {});
   }, []);
 
-  return { site, loading };
+  return { site };
 }

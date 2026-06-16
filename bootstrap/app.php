@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin.auth' => \App\Http\Middleware\AdminSessionAuth::class,
+            'cache.public.api' => \App\Http\Middleware\CachePublicApi::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

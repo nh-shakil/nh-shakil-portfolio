@@ -6,6 +6,6 @@ return [
         "/build/assets/app-DX_NE-Y9.css"
     ],
     'js' =>     [
-        "/build/assets/app-BXZPoFOo.js"
+        "/build/assets/app-D4ZTIq_j.js"
     ],
 ];

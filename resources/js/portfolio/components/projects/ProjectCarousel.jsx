@@ -51,6 +51,8 @@ export function ProjectCarousel({
             exit={{ opacity: 0, scale: 0.99 }}
             transition={{ duration: 0.35 }}
             loading="lazy"
+            decoding="async"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
         </AnimatePresence>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-black/35" />

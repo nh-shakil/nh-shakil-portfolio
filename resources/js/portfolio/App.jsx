@@ -12,19 +12,8 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { useSite } from './hooks/useSite';
 import { prefersReducedMotion } from './lib/a11y';
 
-function AppLoader() {
-  return (
-    <div className="container-shell py-16">
-      <div className="rounded-[26px] border border-white/10 bg-white/5 px-6 py-10 text-white/80">
-        <div className="text-lg font-semibold text-white">Loading…</div>
-        <div className="mt-2 text-sm text-white/60">Preparing the portfolio experience.</div>
-      </div>
-    </div>
-  );
-}
-
 export function App() {
-  const { site, loading } = useSite();
+  const { site } = useSite();
   const reduceMotion = prefersReducedMotion();
 
   const motionConfig = useMemo(
@@ -59,10 +48,6 @@ export function App() {
       lenis.destroy();
     };
   }, [reduceMotion]);
-
-  if (loading) {
-    return <AppLoader />;
-  }
 
   return (
     <MotionConfig transition={motionConfig.transition}>
