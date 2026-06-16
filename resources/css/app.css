@@ -28,13 +28,21 @@
 
     html {
         scroll-behavior: smooth;
+        overflow-x: clip;
+        max-width: 100%;
     }
 
     body {
         font-family: var(--font-sans);
         background: rgb(var(--bg-0));
         color: rgb(var(--fg-0));
-        overflow-x: hidden;
+        overflow-x: clip;
+        max-width: 100%;
+    }
+
+    #app {
+        overflow-x: clip;
+        max-width: 100%;
     }
 
     ::selection {

@@ -24,7 +24,7 @@
             </style>
         @endif
     </head>
-    <body class="min-h-screen noise">
+    <body class="min-h-screen overflow-x-clip noise">
         <a
             href="#content"
             class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white/10 focus:px-4 focus:py-2 focus:text-white focus:backdrop-blur"

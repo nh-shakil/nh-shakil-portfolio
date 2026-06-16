@@ -95,8 +95,8 @@ function ProjectCard({ project }) {
         </div>
       ) : null}
 
-      <div className="relative p-5">
-        <div className="absolute inset-0 opacity-60">
+      <div className="relative overflow-hidden p-5">
+        <div className="pointer-events-none absolute inset-0 opacity-60">
           <div className="absolute -top-20 -right-24 h-56 w-56 rounded-full bg-indigo-500/10 blur-3xl" />
           <div className="absolute -bottom-24 -left-24 h-56 w-56 rounded-full bg-fuchsia-500/10 blur-3xl" />
         </div>

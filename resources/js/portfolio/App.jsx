@@ -34,6 +34,8 @@ export function App() {
       touchMultiplier: 1.2,
       smoothWheel: true,
       wheelMultiplier: 0.9,
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
     });
 
     let raf = 0;

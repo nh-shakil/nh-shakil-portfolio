@@ -9,14 +9,14 @@ export function Hero({ site }) {
     <section id="top" className="relative overflow-hidden pt-14 sm:pt-16">
       <div className="container-shell">
         <div className="relative overflow-hidden rounded-[var(--radius-2xl)] glass-strong noise">
-          <div className="absolute inset-0 opacity-70">
+          <div className="absolute inset-0 overflow-hidden opacity-70">
             <div className="absolute -top-24 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-indigo-500/20 blur-3xl" />
             <div className="absolute -bottom-40 left-10 h-[520px] w-[520px] rounded-full bg-fuchsia-500/16 blur-3xl" />
             <div className="absolute -right-40 top-10 h-[520px] w-[520px] rounded-full bg-cyan-400/14 blur-3xl" />
           </div>
 
           <div className="relative grid grid-cols-1 gap-10 px-6 py-16 sm:px-10 sm:py-20 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-7">
+            <div className="min-w-0 lg:col-span-7">
               <motion.h1
                 initial="hidden"
                 animate="show"
@@ -67,10 +67,10 @@ export function Hero({ site }) {
                 initial="hidden"
                 animate="show"
                 variants={variants.fadeUp(3)}
-                className="mt-10 flex items-center gap-3"
+                className="mt-10 flex flex-wrap items-center gap-3"
               >
                 <a
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
                   href={site.socials.github}
                   target="_blank"
                   rel="noreferrer"
@@ -79,7 +79,7 @@ export function Hero({ site }) {
                   <FiGithub className="h-5 w-5" />
                 </a>
                 <a
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 transition hover:bg-white/10 hover:text-white"
                   href={site.socials.linkedin}
                   target="_blank"
                   rel="noreferrer"
@@ -87,8 +87,8 @@ export function Hero({ site }) {
                 >
                   <FiLinkedin className="h-5 w-5" />
                 </a>
-                <div className="h-6 w-px bg-white/10" />
-                <p className="text-sm text-white/60">
+                <div className="h-6 w-px shrink-0 bg-white/10" />
+                <p className="min-w-0 flex-1 text-sm text-white/60">
                   {site.hero?.availability ?? 'Available for freelance • Remote-friendly'}
                 </p>
               </motion.div>
