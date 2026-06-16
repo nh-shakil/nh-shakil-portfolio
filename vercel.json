@@ -2,23 +2,17 @@
     "version": 2,
     "installCommand": "npm install",
     "buildCommand": "npm run build",
+    "outputDirectory": "public",
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.9.0",
-            "includeFiles": "{config/vite-assets.php,public/build/**,public/uploads/**,public/robots.txt,public/sitemap.xml,public/favicon.ico}"
+            "includeFiles": "{config/vite-assets.php,config/**,app/**,bootstrap/**,routes/**,resources/**,database/**,storage/**,public/uploads/**}"
         }
     },
-    "builds": [
-        { "src": "public/build/**", "use": "@vercel/static" },
-        { "src": "public/uploads/**", "use": "@vercel/static" },
-        { "src": "public/robots.txt", "use": "@vercel/static" },
-        { "src": "public/sitemap.xml", "use": "@vercel/static" },
-        { "src": "public/favicon.ico", "use": "@vercel/static" }
-    ],
     "routes": [
-        { "src": "/build/(.*)", "dest": "/public/build/$1" },
-        { "src": "/uploads/(.*)", "dest": "/public/uploads/$1" },
-        { "src": "/(favicon\\.ico|robots\\.txt|sitemap\\.xml)", "dest": "/public/$1" },
+        { "src": "/build/(.*)", "dest": "/build/$1" },
+        { "src": "/uploads/(.*)", "dest": "/uploads/$1" },
+        { "src": "/(favicon\\.ico|robots\\.txt|sitemap\\.xml)", "dest": "/$1" },
         { "src": "/(.*)", "dest": "/api/index.php" }
     ],
     "env": {
