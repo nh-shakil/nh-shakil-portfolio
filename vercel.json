@@ -4,16 +4,16 @@
     "buildCommand": "npm run build",
     "outputDirectory": "public",
     "functions": {
-        "api/index.php": {
+        "vercel.php": {
             "runtime": "vercel-php@0.9.0",
-            "includeFiles": "{config/vite-assets.php,config/**,app/**,bootstrap/**,routes/**,resources/**,database/**,storage/**,public/uploads/**}"
+            "includeFiles": "{config/vite-assets.php,config/**,app/**,bootstrap/**,routes/**,resources/**,database/portfolio.sqlite,storage/**,public/uploads/**}"
         }
     },
     "routes": [
         { "src": "/build/(.*)", "dest": "/build/$1" },
         { "src": "/uploads/(.*)", "dest": "/uploads/$1" },
         { "src": "/(favicon\\.ico|robots\\.txt|sitemap\\.xml)", "dest": "/$1" },
-        { "src": "/(.*)", "dest": "/api/index.php" }
+        { "src": "/(.*)", "dest": "/vercel.php" }
     ],
     "env": {
         "APP_CONFIG_CACHE": "/tmp/config.php",
@@ -25,6 +25,8 @@
         "CACHE_STORE": "array",
         "SESSION_DRIVER": "cookie",
         "LOG_CHANNEL": "stderr",
-        "APP_URL": "https://nhshakil.vercel.app"
+        "APP_URL": "https://nhshakil.vercel.app",
+        "DB_CONNECTION": "sqlite",
+        "DB_DATABASE": "/tmp/portfolio.sqlite"
     }
 }
