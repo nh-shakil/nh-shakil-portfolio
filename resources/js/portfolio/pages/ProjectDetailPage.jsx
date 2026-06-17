@@ -7,7 +7,7 @@ import { Button } from '../components/ui/Button';
 import { Tag } from '../components/ui/Tag';
 import { ProjectCarousel } from '../components/projects/ProjectCarousel';
 import { ProjectReviews } from '../components/projects/ProjectReviews';
-import { StarRating } from '../components/projects/StarRating';
+import { ProjectRatingBadge } from '../components/projects/ProjectRatingBadge';
 import { apiGet } from '../lib/api';
 
 export function ProjectDetailPage() {
@@ -81,22 +81,25 @@ export function ProjectDetailPage() {
           <div className="space-y-8">
             <Card className="overflow-hidden">
               {project.images?.length ? (
-                <div className="p-4 pb-0 sm:p-6 sm:pb-0">
+                <div className="relative p-3 pb-0 sm:p-6 sm:pb-0">
+                  <div className="pointer-events-none absolute left-5 top-5 z-10 sm:left-8 sm:top-8">
+                    <ProjectRatingBadge
+                      averageRating={project.averageRating}
+                      reviewCount={project.reviewCount}
+                    />
+                  </div>
                   <ProjectCarousel images={project.images} title={project.title} />
                 </div>
-              ) : null}
+              ) : (
+                <div className="border-b border-white/10 px-5 pt-5 sm:px-8">
+                  <ProjectRatingBadge
+                    averageRating={project.averageRating}
+                    reviewCount={project.reviewCount}
+                  />
+                </div>
+              )}
 
-              <div className="p-6 sm:p-8">
-                {project.averageRating ? (
-                  <div className="mb-4 flex flex-wrap items-center gap-3">
-                    <StarRating value={Math.round(project.averageRating)} />
-                    <span className="text-sm text-white/70">
-                      {project.averageRating} · {project.reviewCount ?? 0} review
-                      {(project.reviewCount ?? 0) === 1 ? '' : 's'}
-                    </span>
-                  </div>
-                ) : null}
-
+              <div className="p-5 sm:p-8">
                 {project.description ? (
                   <div className="whitespace-pre-wrap text-sm leading-relaxed text-white/75">
                     {project.description}
@@ -109,14 +112,26 @@ export function ProjectDetailPage() {
                   ))}
                 </div>
 
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-6 grid grid-cols-2 gap-2.5 sm:flex sm:flex-row">
                   {project.liveUrl ? (
-                    <Button href={project.liveUrl} variant="primary" target="_blank" rel="noreferrer">
+                    <Button
+                      href={project.liveUrl}
+                      variant="primary"
+                      className="min-h-11 w-full touch-manipulation sm:w-auto"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Live <FiExternalLink className="h-4 w-4" />
                     </Button>
                   ) : null}
                   {project.githubUrl ? (
-                    <Button href={project.githubUrl} variant="ghost" target="_blank" rel="noreferrer">
+                    <Button
+                      href={project.githubUrl}
+                      variant="ghost"
+                      className="min-h-11 w-full touch-manipulation sm:w-auto"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       GitHub <FiGithub className="h-4 w-4" />
                     </Button>
                   ) : null}

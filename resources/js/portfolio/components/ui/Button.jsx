@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black';
+  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation active:scale-[0.98]';
 
 export function Button({
   as: Comp = 'a',
@@ -26,14 +25,14 @@ export function Button({
       : { onClick, ...rest };
 
   return (
-    <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }} className={className.includes('w-full') ? 'w-full' : undefined}>
+    <div className={className.includes('w-full') ? 'w-full' : undefined}>
       <Comp
         {...compProps}
         className={`${base} ${styles} ${className}`}
       >
         {children}
       </Comp>
-    </motion.div>
+    </div>
   );
 }
 

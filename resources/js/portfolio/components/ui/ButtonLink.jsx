@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
 const base =
-  'inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black';
+  'inline-flex w-full min-h-11 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black touch-manipulation active:scale-[0.98]';
 
 const variants = {
   primary: 'bg-white text-black hover:bg-white/90',
@@ -12,10 +11,8 @@ const variants = {
 
 export function ButtonLink({ to, variant = 'primary', className = '', children }) {
   return (
-    <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }} className="w-full sm:w-auto">
-      <Link to={to} className={`${base} ${variants[variant] ?? variants.primary} ${className}`}>
-        {children}
-      </Link>
-    </motion.div>
+    <Link to={to} className={`${base} ${variants[variant] ?? variants.primary} ${className}`}>
+      {children}
+    </Link>
   );
 }
