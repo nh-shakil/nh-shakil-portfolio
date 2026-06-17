@@ -4,8 +4,10 @@ import { FiExternalLink, FiGithub, FiStar } from 'react-icons/fi';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { ButtonLink } from '../components/ui/ButtonLink';
 import { Tag } from '../components/ui/Tag';
 import { Link } from 'react-router-dom';
+import { StarRating } from '../components/projects/StarRating';
 import { apiGet } from '../lib/api';
 import { variants } from '../lib/motion';
 import { ProjectCarousel } from '../components/projects/ProjectCarousel';
@@ -120,6 +122,12 @@ function ProjectCard({ project }) {
                   {project.excerpt}
                 </p>
               ) : null}
+              {project.reviewCount > 0 ? (
+                <div className="mt-2 flex items-center gap-2">
+                  <StarRating value={Math.round(project.averageRating ?? 0)} size="sm" />
+                  <span className="text-xs text-white/55">({project.reviewCount})</span>
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -131,9 +139,14 @@ function ProjectCard({ project }) {
 
           <div className="mt-4 flex flex-col gap-2">
             {project.slug ? (
-              <Button as={Link} to={`/projects/${project.slug}`} variant="primary" className="w-full">
-                View & review
-              </Button>
+              <>
+                <ButtonLink to={`/projects/${project.slug}#reviews`} variant="primary" className="w-full">
+                  ★ Leave a review
+                </ButtonLink>
+                <ButtonLink to={`/projects/${project.slug}`} variant="ghost" className="w-full">
+                  View project details
+                </ButtonLink>
+              </>
             ) : null}
             {project.liveUrl ? (
               <Button

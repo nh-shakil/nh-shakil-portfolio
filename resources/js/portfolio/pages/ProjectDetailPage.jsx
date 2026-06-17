@@ -33,6 +33,17 @@ export function ProjectDetailPage() {
     };
   }, [slug]);
 
+  useEffect(() => {
+    if (!state.project || state.loading) return;
+    if (window.location.hash !== '#reviews') return;
+
+    const timer = window.setTimeout(() => {
+      document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+
+    return () => window.clearTimeout(timer);
+  }, [state.loading, state.project]);
+
   const { project } = state;
 
   return (

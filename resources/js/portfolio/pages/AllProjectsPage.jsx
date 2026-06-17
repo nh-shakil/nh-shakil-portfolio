@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 import { Section } from '../components/ui/Section';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { ButtonLink } from '../components/ui/ButtonLink';
 import { Tag } from '../components/ui/Tag';
+import { StarRating } from '../components/projects/StarRating';
 import { ProjectCarousel } from '../components/projects/ProjectCarousel';
 import { apiGet } from '../lib/api';
 import { variants } from '../lib/motion';
@@ -94,9 +96,14 @@ export function AllProjectsPage({ site }) {
 
                   <div className="mt-5 flex flex-col gap-3 sm:flex-row">
                     {p.slug ? (
-                      <Button as={Link} to={`/projects/${p.slug}`} variant="primary" className="w-full sm:w-auto">
-                        View & review
-                      </Button>
+                      <>
+                        <ButtonLink to={`/projects/${p.slug}#reviews`} variant="primary" className="w-full sm:w-auto">
+                          ★ Leave a review
+                        </ButtonLink>
+                        <ButtonLink to={`/projects/${p.slug}`} variant="ghost" className="w-full sm:w-auto">
+                          Details
+                        </ButtonLink>
+                      </>
                     ) : null}
                     {p.liveUrl ? (
                       <Button

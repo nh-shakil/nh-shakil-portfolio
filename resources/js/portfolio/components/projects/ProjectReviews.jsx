@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -8,10 +8,14 @@ import { apiPost } from '../../lib/api';
 const inputClass =
   'mt-2 w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white/90 outline-none focus:border-white/20 focus:ring-2 focus:ring-cyan-300/30';
 
-export function ProjectReviews({ slug, reviews = [], onReviewAdded }) {
+export function ProjectReviews({ slug, reviews = [], onReviewAdded, compact = false }) {
   const [items, setItems] = useState(reviews);
   const [form, setForm] = useState({ name: '', rating: 0, comment: '' });
   const [status, setStatus] = useState({ state: 'idle', message: '' });
+
+  useEffect(() => {
+    setItems(reviews);
+  }, [reviews]);
 
   const onChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -49,10 +53,13 @@ export function ProjectReviews({ slug, reviews = [], onReviewAdded }) {
   };
 
   return (
-    <div className="space-y-6">
-      <Card className="p-6 sm:p-8">
-        <div className="text-sm font-semibold text-white">Leave a review</div>
-        <div className="mt-1 text-xs text-white/60">Share your name, star rating, and comment.</div>
+    <div id="reviews" className="scroll-mt-28 space-y-6">
+      <Card className={`border border-amber-300/15 bg-gradient-to-b from-amber-300/10 to-transparent ${compact ? 'p-5' : 'p-6 sm:p-8'}`}>
+        <div className="flex items-center gap-2 text-amber-100">
+          <span className="text-lg">★</span>
+          <div className="text-sm font-semibold text-white">Leave a review</div>
+        </div>
+        <div className="mt-1 text-xs text-white/60">Name, star rating, and comment.</div>
 
         <form onSubmit={onSubmit} className="mt-5 space-y-4">
           <div>

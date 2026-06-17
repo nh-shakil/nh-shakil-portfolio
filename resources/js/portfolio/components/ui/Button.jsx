@@ -20,13 +20,16 @@ export function Button({
         ? 'bg-white/5 text-white hover:bg-white/10 border border-white/10'
         : 'bg-transparent text-white/80 hover:text-white';
 
+  const compProps =
+    Comp === 'a'
+      ? { href, onClick, ...rest }
+      : { onClick, ...rest };
+
   return (
-    <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }}>
+    <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.99 }} className={className.includes('w-full') ? 'w-full' : undefined}>
       <Comp
-        href={href}
-        onClick={onClick}
+        {...compProps}
         className={`${base} ${styles} ${className}`}
-        {...rest}
       >
         {children}
       </Comp>
