@@ -5,8 +5,10 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\BlogPostController;
+use App\Http\Controllers\Api\ProjectReviewController;
 
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:10,1');
+Route::post('/projects/{slug}/reviews', [ProjectReviewController::class, 'store'])->middleware('throttle:10,1');
 
 Route::middleware('cache.public.api')->group(function () {
     Route::get('/settings', [SettingController::class, 'index']);

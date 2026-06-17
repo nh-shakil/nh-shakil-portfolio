@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SiteShell } from './components/layout/SiteShell';
 import { HomePage } from './pages/HomePage';
 import { AllProjectsPage } from './pages/AllProjectsPage';
+import { ProjectDetailPage } from './pages/ProjectDetailPage';
 import { AllGalleryPage } from './pages/AllGalleryPage';
 import { AllBlogPage } from './pages/AllBlogPage';
 import { BlogPostPage } from './pages/BlogPostPage';
@@ -58,6 +59,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomePage site={site} />} />
             <Route path="/projects" element={<AllProjectsPage site={site} />} />
+            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
             <Route path="/gallery" element={<AllGalleryPage site={site} loading={false} />} />
             <Route path="/blog" element={<AllBlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />

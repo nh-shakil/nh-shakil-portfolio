@@ -93,10 +93,15 @@ export function AllProjectsPage({ site }) {
                   </div>
 
                   <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                    {p.slug ? (
+                      <Button as={Link} to={`/projects/${p.slug}`} variant="primary" className="w-full sm:w-auto">
+                        View & review
+                      </Button>
+                    ) : null}
                     {p.liveUrl ? (
                       <Button
                         href={p.liveUrl}
-                        variant="primary"
+                        variant={p.slug ? 'ghost' : 'primary'}
                         className="w-full sm:w-auto"
                         target="_blank"
                         rel="noreferrer"

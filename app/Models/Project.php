@@ -35,5 +35,10 @@ class Project extends Model
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order')->orderBy('id');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProjectReview::class)->latest('id');
+    }
 }
 

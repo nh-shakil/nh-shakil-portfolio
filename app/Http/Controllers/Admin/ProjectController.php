@@ -42,7 +42,7 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        $project->load('images');
+        $project->load(['images', 'reviews']);
         return view('admin.projects.edit', compact('project'));
     }
 
@@ -58,6 +58,7 @@ class ProjectController extends Controller
 
         $project->fill($data)->save();
         $this->syncImages($project, $request);
+        $this->syncReviews($project, $request);
 
         return redirect()->route('admin.projects.edit', $project)->with('status', 'Project updated.');
     }
@@ -87,6 +88,8 @@ class ProjectController extends Controller
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:100000'],
             'remove_image_ids' => ['nullable', 'array'],
             'remove_image_ids.*' => ['integer'],
+            'remove_review_ids' => ['nullable', 'array'],
+            'remove_review_ids.*' => ['integer'],
             'images' => ['nullable', 'array'],
             'images.*' => ImageUpload::imageRules(),
         ]);
@@ -141,6 +144,14 @@ class ProjectController extends Controller
                 'sort_order' => $nextSort,
             ]);
             $nextSort += 10;
+        }
+    }
+
+    private function syncReviews(Project $project, Request $request): void
+    {
+        $removeIds = $request->input('remove_review_ids', []);
+        if (is_array($removeIds) && $removeIds !== []) {
+            $project->reviews()->whereIn('id', $removeIds)->delete();
         }
     }
 }

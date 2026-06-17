@@ -39,7 +39,7 @@ export function Projects({ site }) {
       desc="A few representative builds showcasing premium UI, reliable APIs, and production-ready delivery."
     >
       <div className="mb-6 flex items-center justify-between">
-        <div className="text-sm text-white/60">Managed from admin panel</div>
+        
         <Link
           to="/projects"
           className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 hover:bg-white/10"
@@ -130,10 +130,15 @@ function ProjectCard({ project }) {
           </div>
 
           <div className="mt-4 flex flex-col gap-2">
+            {project.slug ? (
+              <Button as={Link} to={`/projects/${project.slug}`} variant="primary" className="w-full">
+                View & review
+              </Button>
+            ) : null}
             {project.liveUrl ? (
               <Button
                 href={project.liveUrl}
-                variant="primary"
+                variant={project.slug ? 'ghost' : 'primary'}
                 className="w-full"
                 target={project.liveUrl?.startsWith('http') ? '_blank' : undefined}
                 rel={project.liveUrl?.startsWith('http') ? 'noreferrer' : undefined}

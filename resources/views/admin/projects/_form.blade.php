@@ -65,6 +65,35 @@
                 </div>
             @endif
         </div>
+
+        @if ($isEdit)
+            <div class="mt-6 rounded-[var(--radius-2xl)] border border-white/10 bg-white/5 p-6">
+                <div class="text-sm font-semibold">Reviews</div>
+                <div class="mt-1 text-xs text-white/60">Visitor reviews submitted from the project page. Check to remove.</div>
+
+                @if ($project->reviews->count())
+                    <div class="mt-5 space-y-3">
+                        @foreach ($project->reviews as $review)
+                            <label class="block rounded-2xl border border-white/10 bg-black/30 p-4">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-medium text-white">{{ $review->name }}</div>
+                                        <div class="mt-1 text-xs text-amber-200">{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</div>
+                                        <div class="mt-2 text-sm text-white/75">{{ $review->comment }}</div>
+                                    </div>
+                                    <div class="shrink-0 text-xs text-white/60">
+                                        <input type="checkbox" name="remove_review_ids[]" value="{{ $review->id }}" class="mr-1">
+                                        remove
+                                    </div>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="mt-4 text-sm text-white/55">No reviews yet.</div>
+                @endif
+            </div>
+        @endif
     </div>
 
     <div class="lg:col-span-4">
